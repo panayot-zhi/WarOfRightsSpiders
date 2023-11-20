@@ -12,6 +12,7 @@ class SearchPlayers(scrapy.Spider):
             'players.json': {
                 'format': 'json',
                 'encoding': 'utf8',
+                'overwrite': True,
                 'store_empty': False,
                 'indent': 4,
                 'item_export_kwargs': {
