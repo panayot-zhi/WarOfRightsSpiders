@@ -1,13 +1,13 @@
 import scrapy
 
-class WarOfRightsSpider(scrapy.Spider):
+class SearchPlayers(scrapy.Spider):
     name = 'search_players'
     start_urls = ['https://warofrights.com/CT']
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(WarOfRightsSpider, cls).from_crawler(crawler, *args, **kwargs)
-        # Set FEEDS setting here
+        spider = super(SearchPlayers, cls).from_crawler(crawler, *args, **kwargs)
+
         crawler.settings.set('FEEDS', {
             'players.json': {
                 'format': 'json',
