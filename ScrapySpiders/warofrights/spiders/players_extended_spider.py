@@ -35,6 +35,7 @@ class PlayersExt(scrapy.Spider):
     def parse(self, response):
         player_info = response.css('#ContentPlaceHolder1_UpdatePanelGeneral > div.floatLeft > h3.handWritten::text').extract()
         regiment_name = response.css('#ContentPlaceHolder1_UpdatePanelGeneral > div.floatLeft > #ContentPlaceHolder1_companyLink > h3.handWritten::text').get().strip()
+        remarks = response.css('#ContentPlaceHolder1_tbRemarks::text').get().strip()
 
         player_data = {
             "SoldierID": response.url.replace('https://warofrights.com/CT_ViewSoldier?soldierID=', ''),
@@ -48,10 +49,16 @@ class PlayersExt(scrapy.Spider):
             "SoldierRole": player_info[3].strip(),
             "Nation": player_info[4].strip(),
             "Platoon": player_info[5].strip(),
-            "LastLogin": player_info[6].strip()
+            "LastLogin": player_info[6].strip(),
+            "Remarks": remarks,
+            "ServiceRecords": []
         }
 
         player_data["DisplayName"] = player_data["SoldierName"]
+        service_records = response.css('p.handWritten.serviceRecord::text').extract()
+
+        for i in range(0, len(service_records), 2):
+            player_data["ServiceRecords"].append(service_records[i+1].strip() + ' - ' + service_records[i].strip())
 
         if regiment_name != "Not in a company":
             regiment_element_js_link = response.css('#ContentPlaceHolder1_UpdatePanelGeneral > div.floatLeft > #ContentPlaceHolder1_companyLink::attr(href)').get()
@@ -61,8 +68,5 @@ class PlayersExt(scrapy.Spider):
             player_data["RegimentID"] = regiment_link.replace('CT_ViewCompany?companyID=', '')
             player_data["RegimentLink"] = '/' + regiment_link
             player_data["RegimentName"] = regiment_name
-
-
-
 
         yield player_data
