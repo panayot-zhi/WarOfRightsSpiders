@@ -5,13 +5,28 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Launch Scrapy Spider",
+            "name": "Players Search",
             "type": "python",
             "request": "launch",
             "module": "scrapy",
             "args": [
                 "runspider",
-                "${file}"
+                //"--logfile=players_search_spider.log",
+                "--overwrite-output=players.json:json",
+                "./players_search_spider.py"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Players Extended",
+            "type": "python",
+            "request": "launch",
+            "module": "scrapy",
+            "args": [
+                "runspider",
+                //"--logfile=players_extended_spider.log",
+                "--overwrite-output=players_ext.json:json",
+                "./players_extended_spider.py"
             ],
             "console": "integratedTerminal"
         }
